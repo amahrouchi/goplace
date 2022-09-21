@@ -43,7 +43,7 @@ func main() {
 	io.DisplaySummary(path, toReplace, replacement)
 
 	// Confirmation
-	confirmed, err := io.Confirm()
+	confirmed, err := io.Confirm("Do you want to proceed to the replacement?")
 	if err != nil {
 		fmt.Printf("\nUser confirmation error: \"%v\"\n", err)
 		return
@@ -55,10 +55,17 @@ func main() {
 	}
 
 	fmt.Println("\nLet's go!")
+	newLines, occ, lines, err := io.FindReplaceFile(path, toReplace, replacement)
+	if err != nil {
+		fmt.Printf("\nError while replacing: \"%v\"\n", err)
+		return
+	}
 
-	// Read the file line by line
-	// Replace the string
-	// Print the resulted file
-	// Ask if the user wants to print in a file
-	// If yes print the file path given by the user
+	fmt.Printf("%d occurrences of \"%s\" where replaced by \"%s\"\n", occ, toReplace, replacement)
+	fmt.Printf("Occurrences find on lines: %v\n", lines)
+
+	confirmed, err = io.Confirm("Do you want see the new content?")
+	if confirmed {
+		fmt.Println(newLines)
+	}
 }

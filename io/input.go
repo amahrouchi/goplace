@@ -18,11 +18,11 @@ func GetUserInput(question string) (string, error) {
 	return input, nil
 }
 
-func Confirm() (bool, error) {
+func Confirm(message string) (bool, error) {
 	var answer string
 	for strings.ToLower(answer) != "y" && strings.ToLower(answer) != "n" {
 
-		fmt.Println("\nDo you want to proceed to the replacement? (y/n)")
+		fmt.Println("\n" + message + " (y/n)")
 		_, err := fmt.Scanln(&answer)
 		if err != nil {
 			return false, err
