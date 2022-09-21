@@ -2,6 +2,7 @@ package io
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
 )
@@ -42,4 +43,34 @@ func FindReplaceFile(src, old, new string) (newLines string, occ int, lines []in
 
 func processLine(line, old, new string) string {
 	return strings.ReplaceAll(line, old, new)
+}
+
+func WriteFile(path, content string) error {
+	// Check file existence
+	_, err := os.Stat(path)
+
+	// Create/open the file
+	var f *os.File
+	if err == nil {
+		f, err = os.OpenFile(path, os.O_WRONLY, 0666)
+		defer f.Close()
+		if err != nil {
+			return err
+		}
+	} else {
+		f, err = os.Create(path)
+		defer f.Close()
+		if err != nil {
+			return err
+		}
+
+		fmt.Printf("\nCreating the file: \"%v\"...\n", path)
+	}
+
+	_, err = f.WriteString(content)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
